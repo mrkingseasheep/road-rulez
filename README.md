@@ -1,2 +1,2 @@
-# ignition-hacks
-Nah
+# Ignition Hacks
+A 36 hour hacakthon
