@@ -102,7 +102,12 @@ def game():
     screen.blit(car, car_rect)
 
 def accelerator():
-    pygame.draw.rect(screen, GRAY, (WIDTH // 10 * 9, HEIGHT // 10 * 9, 45, 50))
+    accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
+    pygame.draw.rect(screen, GRAY, accelerator_rect)
+
+def brake():
+    brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
+    pygame.draw.rect(screen, GRAY, brake_rect)
 
 def pause():
     global scene
@@ -179,7 +184,8 @@ while True:
         game()
         pause()
         accelerator()
-        
+        brake()
+
     elif scene == "pause":
         pause_scene()
     elif scene == "tutorial":
