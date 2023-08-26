@@ -3,7 +3,7 @@ import sys
 
 pygame.init()
 
-pygame.display.set_caption("NAME | Ignition Hacks")
+pygame.display.set_caption("GAME NAME | Ignition Hacks")
 pygame.display.set_icon(pygame.image.load("./Graphics/Logo.png"))
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
@@ -38,14 +38,21 @@ while True:
         background_rect = background.get_rect()
         background_rect.center = (WIDTH // 2, HEIGHT // 2)
         screen.blit(background, (background_rect))
+        
+        pygame.draw.rect(screen, BROWN, (WIDTH // 10, HEIGHT // 10 * 2, WIDTH // 10 * 6 + (background_rect.width // 10 * 3) - WIDTH // 10, 50), 0, 10, 10, 10, 10)
+        title_text = font.render("GAME NAME", True, BLACK)
+        title_rect = title_text.get_rect(center = (WIDTH // 10 + ((WIDTH // 10 * 6 + (background_rect.width // 10 * 3) - WIDTH // 10) // 2), HEIGHT // 10 * 2 + 25))
+        screen.blit(title_text, title_rect)
 
         pygame.draw.rect(screen, BROWN, (WIDTH // 10, HEIGHT // 10 * 8, background_rect.width // 10 * 3, 50), 0, 10, 10, 10, 10)
         play_text = font.render("G2 Preparation", True, BLACK)
-        screen.blit(play_text, (WIDTH // 10 * 2, HEIGHT // 10 * 8 + 15))
+        play_rect = play_text.get_rect(center = (WIDTH // 10 + (background_rect.width // 10 * 3) // 2, HEIGHT // 10 * 8 + 25))
+        screen.blit(play_text, play_rect)
 
         pygame.draw.rect(screen, BROWN, (WIDTH // 10 * 6, HEIGHT // 10 * 8, background_rect.width // 10 * 3, 50), 0, 10, 10, 10, 10)
         exit_text = font.render("Exit", True, BLACK)
-        screen.blit(exit_text, (WIDTH // 10 * 7 + 50, HEIGHT // 10 * 8 + 15))
+        exit_rect = exit_text.get_rect(center = (WIDTH // 10 * 6 + (background_rect.width // 10 * 3) // 2, HEIGHT // 10 * 8 + 25))
+        screen.blit(exit_text, exit_rect)
 
     elif scene == "game": 
         keys = pygame.key.get_pressed()
