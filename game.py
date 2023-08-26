@@ -13,7 +13,7 @@ class Game:
         pygame.init()
         self.FPS = 60
 
-        pygame.display.set_caption(TITLE)
+        pygame.display.set_caption("TITLE | Ignition Hacks")
         pygame.display.set_icon(pygame.image.load("./Graphics/Logo.png"))
         self.SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
         self.CLOCK = pygame.time.Clock()
