@@ -101,57 +101,6 @@ def game():
     car_rect = car.get_rect(center=car_pos)
     screen.blit(car, car_rect)
 
-# Define thumbstick elements
-outer_ring_radius = 100
-inner_thumbstick_radius = 30
-
-outer_ring_color = (100, 100, 100)
-inner_thumbstick_color = (200, 200, 200)
-
-outer_ring_surface = pygame.Surface((outer_ring_radius * 2, outer_ring_radius * 2), pygame.SRCALPHA)
-inner_thumbstick_surface = pygame.Surface((inner_thumbstick_radius * 2, inner_thumbstick_radius * 2), pygame.SRCALPHA)
-
-pygame.draw.circle(outer_ring_surface, outer_ring_color, (outer_ring_radius, outer_ring_radius), outer_ring_radius)
-pygame.draw.circle(inner_thumbstick_surface, inner_thumbstick_color, (inner_thumbstick_radius, inner_thumbstick_radius), inner_thumbstick_radius)
-
-# Set initial position of the inner thumbstick
-thumbstick_position = (outer_ring_radius, outer_ring_radius)
-
-# Set position of the outer ring
-outer_ring_position = (100, 100)  # Example position, adjust according to your game layout
-
-# Thumbstick control
-def thumbstick():
-    global thumbstick_position, velocity, ang_vel
-
-    for event in pygame.event.get():
-        # Handle touch events
-        if event.type == pygame.FINGERDOWN or event.type == pygame.FINGERUP or event.type == pygame.FINGERMOTION:
-            for touch in event.touches:
-                # Check if touch is within the thumbstick's outer ring
-                if pygame.Rect(outer_ring_position, (outer_ring_radius * 2, outer_ring_radius * 2)).collidepoint(touch.x, touch.y):
-                    # Calculate displacement from the center of the outer ring
-                    displacement = pygame.math.Vector2(touch.x - outer_ring_position[0], touch.y - outer_ring_position[1])
-
-                    # Restrict the displacement to the radius of the outer ring
-                    if displacement.length() > outer_ring_radius:
-                        displacement.scale_to_length(outer_ring_radius)
-
-                    # Update the position of the inner thumbstick
-                    thumbstick_position = outer_ring_position[0] + displacement.x, outer_ring_position[1] + displacement.y
-
-    # Calculate movement values based on the position of the inner thumbstick
-    displacement = pygame.math.Vector2(thumbstick_position[0] - outer_ring_position[0], thumbstick_position[1] - outer_ring_position[1])
-    normalized_displacement = displacement.normalize()  # Normalize the displacement vector to get the direction
-
-    # Map the position of the inner thumbstick to movement values for the sprite
-    velocity = normalized_displacement.length() * acceleration
-    ang_vel = displacement.angle_to(pygame.math.Vector2(1, 0))  # Calculate the angle between the displacement vector and the positive x-axis
-
-    # Update the position of the inner thumbstick on the screen
-    thumbstick_rect = inner_thumbstick_surface.get_rect(center=thumbstick_position)
-    screen.blit(inner_thumbstick_surface, thumbstick_rect)
-
 def pause():
     global scene
     pygame.draw.circle(screen, GRAY, (WIDTH // 10 * 9.5, HEIGHT // 10), 25)
@@ -161,6 +110,11 @@ def pause():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
             scene = "pause"
+
+def tutorial():
+    background_rect = background.get_rect()
+    background_rect.center = (WIDTH // 2, HEIGHT // 2)
+    screen.blit(background, (background_rect))
 
 def pause_scene():
     global scene
@@ -199,7 +153,7 @@ def pause_scene():
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_pos = pygame.mouse.get_pos()
         if tutorial_button.collidepoint(mouse_pos):
-            print("tutorial")
+            scene = "tutorial"
         elif menu_button.collidepoint(mouse_pos):
             scene = "menu"
         elif resume_button.collidepoint(mouse_pos):
@@ -221,9 +175,10 @@ while True:
     elif scene == "game":
         game()
         pause()
-        thumbstick()
     elif scene == "pause":
         pause_scene()
+    elif scene == "tutorial":
+        tutorial()
 
     pygame.display.update()
 
