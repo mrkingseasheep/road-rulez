@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 car_original = pygame.image.load('./Graphics/Car.png')
 background = pygame.transform.scale(pygame.image.load("./Graphics/Background.png").convert_alpha(), (WIDTH, HEIGHT))
 car = car_original
-font = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 30)
+font = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 40)
 
 BROWN = (194, 114, 77)
 BLACK = (0, 0, 0)
