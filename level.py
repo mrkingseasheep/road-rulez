@@ -56,3 +56,19 @@ class Level:
         car_rect = self.car.get_rect(center=self.car_pos)
 
         self.screen.blit(self.car, car_rect)
+        self.accelerator()
+        self.brake()
+        self.pause()
+
+    def accelerator(self):
+        accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
+        pygame.draw.rect(self.screen, GRAY, accelerator_rect)
+
+    def brake(self):
+        brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
+        pygame.draw.rect(self.screen, GRAY, brake_rect)
+
+    def pause(self):
+        pygame.draw.circle(self.screen, GRAY, (WIDTH // 10 * 9.5, HEIGHT // 10), 25)
+        pygame.draw.rect(self.screen, WHITE, (WIDTH // 10 * 9.5 - 14, HEIGHT // 10 - 15, 10, 30))
+        pygame.draw.rect(self.screen, WHITE, (WIDTH // 10 * 9.5 + 6, HEIGHT // 10 - 15, 10, 30))
