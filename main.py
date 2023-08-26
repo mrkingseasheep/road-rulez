@@ -62,6 +62,13 @@ while True:
         exit_rect = exit_text.get_rect(center = (WIDTH // 10 * 6 + (background_rect.width // 10 * 3) // 2, HEIGHT // 10 * 8 + 25))
         screen.blit(exit_text, exit_rect)
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if (WIDTH // 10 < event.pos[0] < WIDTH // 10 + background_rect.width // 10 * 3) and (HEIGHT // 10 * 8 < event.pos[1] < HEIGHT // 10 * 8 + 50):
+                 scene = "game"
+            elif (WIDTH // 10 * 6 < event.pos[0] < WIDTH // 10 * 6 + background_rect.width // 10 * 3) and (HEIGHT // 10 * 8 < event.pos[1] < HEIGHT // 10 * 8 + 50):
+                pygame.quit()
+                sys.exit()
+
     elif scene == "game":
         keys = pygame.key.get_pressed()
 
