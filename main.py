@@ -111,6 +111,11 @@ def pause():
         if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
             scene = "pause"
 
+def tutorial():
+    background_rect = background.get_rect()
+    background_rect.center = (WIDTH // 2, HEIGHT // 2)
+    screen.blit(background, (background_rect))
+
 def pause_scene():
     global scene
 
@@ -148,7 +153,7 @@ def pause_scene():
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_pos = pygame.mouse.get_pos()
         if tutorial_button.collidepoint(mouse_pos):
-            print("tutorial")
+            scene = "tutorial"
         elif menu_button.collidepoint(mouse_pos):
             scene = "menu"
         elif resume_button.collidepoint(mouse_pos):
@@ -172,6 +177,8 @@ while True:
         pause()
     elif scene == "pause":
         pause_scene()
+    elif scene == "tutorial":
+        tutorial()
 
     pygame.display.update()
 
