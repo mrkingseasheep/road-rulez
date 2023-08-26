@@ -9,3 +9,9 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
 WIDTH = screen.get_width()
 HEIGHT = screen.get_height()
+
+while True:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      pygame.quit()
+      sys.exit()
