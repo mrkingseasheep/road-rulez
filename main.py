@@ -1,6 +1,5 @@
 import pygame
 import sys
-import math
 
 pygame.init()
 
@@ -13,10 +12,19 @@ HEIGHT = screen.get_height()
 
 clock = pygame.time.Clock()
 
+car_original = pygame.transform.scale(pygame.image.load("./Graphics/Car.png").convert_alpha(), (35, 35))
+background = pygame.transform.scale(pygame.image.load("./Graphics/Background.png").convert_alpha(), (WIDTH, HEIGHT))
+
+font = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 30)
+
+BROWN = (194, 114, 77)
+BLACK = (0, 0, 0)
+
 player_pos = pygame.Vector2(WIDTH // 2, HEIGHT // 2)
-car_original = pygame.image.load('./Graphics/Car.png')
 car = car_original
 rotation_angle = 0
+
+scene = "menu"
 
 while True:
     for event in pygame.event.get():
@@ -26,28 +34,41 @@ while True:
         
     screen.fill("black")
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        movement = pygame.Vector2(0, -5)
-        movement.rotate_ip(-rotation_angle)
-        player_pos += movement
-    elif keys[pygame.K_s]:
-        movement = pygame.Vector2(0, 5)
-        movement.rotate_ip(-rotation_angle)
-        player_pos += movement
-    elif keys[pygame.K_a]:
-        rotation_angle += 5
-        if rotation_angle >= 360:
-            rotation_angle -= 360
-            
-    elif keys[pygame.K_d]:
-        rotation_angle -= 5
-        if rotation_angle < 0:
-            rotation_angle += 360
+    if scene == "menu":
+        background_rect = background.get_rect()
+        background_rect.center = (WIDTH // 2, HEIGHT // 2)
+        screen.blit(background, (background_rect))
+
+        pygame.draw.rect(screen, BROWN, (WIDTH // 10, HEIGHT // 10 * 8, background_rect.width // 10 * 3, 50), 0, 10, 10, 10, 10)
+        play_text = font.render("G2 Preparation", True, BLACK)
+        screen.blit(play_text, (WIDTH // 10 * 2, HEIGHT // 10 * 8 + 15))
+
+        pygame.draw.rect(screen, BROWN, (WIDTH // 10 * 6, HEIGHT // 10 * 8, background_rect.width // 10 * 3, 50), 0, 10, 10, 10, 10)
+        exit_text = font.render("Exit", True, BLACK)
+        screen.blit(exit_text, (WIDTH // 10 * 7 + 50, HEIGHT // 10 * 8 + 15))
+
+    elif scene == "game": 
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w]:
+            movement = pygame.Vector2(0, -5)
+            movement.rotate_ip(-rotation_angle)
+            player_pos += movement
+        elif keys[pygame.K_s]:
+            movement = pygame.Vector2(0, 5)
+            movement.rotate_ip(-rotation_angle)
+            player_pos += movement
+        elif keys[pygame.K_a]:
+            rotation_angle += 5
+            if rotation_angle >= 360:
+                rotation_angle -= 360
+        elif keys[pygame.K_d]:
+            rotation_angle -= 5
+            if rotation_angle < 0:
+                rotation_angle += 360
     
-    car = pygame.transform.rotate(car_original, rotation_angle)
-    car_rect = car.get_rect(center = player_pos)
-    screen.blit(car, car_rect)
+        car = pygame.transform.rotate(car_original, rotation_angle)
+        car_rect = car.get_rect(center = player_pos)
+        screen.blit(car, car_rect)
     
     pygame.display.update()
 
