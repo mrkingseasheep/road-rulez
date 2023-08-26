@@ -1,5 +1,6 @@
 import pygame
 import sys
+import math
 
 pygame.init()
 
@@ -12,17 +13,24 @@ HEIGHT = screen.get_height()
 
 clock = pygame.time.Clock()
 
-car_original = pygame.transform.scale(pygame.image.load("./Graphics/Car.png").convert_alpha(), (35, 35))
+car_original = pygame.image.load('./Graphics/Car.png')
 background = pygame.transform.scale(pygame.image.load("./Graphics/Background.png").convert_alpha(), (WIDTH, HEIGHT))
-
+car = car_original
 font = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 30)
 
 BROWN = (194, 114, 77)
 BLACK = (0, 0, 0)
 
-player_pos = pygame.Vector2(WIDTH // 2, HEIGHT // 2)
-car = car_original
-rotation_angle = 0
+rot_angle = 0
+car_pos = pygame.Vector2(WIDTH // 2, HEIGHT // 2)
+velocity = 0
+acceleration = 0.6
+max_vel = 7
+ang_vel = 0
+ang_accel = 1
+max_ang_vel = 3
+friction = 0.9
+rot_friction = 0.9
 
 scene = "menu"
 
@@ -31,7 +39,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        
+
     screen.fill("black")
 
     if scene == "menu":
@@ -54,29 +62,42 @@ while True:
         exit_rect = exit_text.get_rect(center = (WIDTH // 10 * 6 + (background_rect.width // 10 * 3) // 2, HEIGHT // 10 * 8 + 25))
         screen.blit(exit_text, exit_rect)
 
-    elif scene == "game": 
+    elif scene == "game":
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_w]:
-            movement = pygame.Vector2(0, -5)
-            movement.rotate_ip(-rotation_angle)
-            player_pos += movement
-        elif keys[pygame.K_s]:
-            movement = pygame.Vector2(0, 5)
-            movement.rotate_ip(-rotation_angle)
-            player_pos += movement
-        elif keys[pygame.K_a]:
-            rotation_angle += 5
-            if rotation_angle >= 360:
-                rotation_angle -= 360
-        elif keys[pygame.K_d]:
-            rotation_angle -= 5
-            if rotation_angle < 0:
-                rotation_angle += 360
-    
-        car = pygame.transform.rotate(car_original, rotation_angle)
-        car_rect = car.get_rect(center = player_pos)
+            velocity -= acceleration
+        if keys[pygame.K_s]:
+            velocity += acceleration * 0.2
+        if keys[pygame.K_a]:
+            ang_vel += ang_accel
+        if keys[pygame.K_d]:
+            ang_vel -= ang_accel
+
+        # keeps velocity and ang_vel in bounds
+        if velocity < -max_vel:
+            velocity = -max_vel
+        elif velocity > max_vel:
+            velocity = max_vel
+
+        if ang_vel < -max_ang_vel:
+            ang_vel = -max_ang_vel
+        elif ang_vel > max_ang_vel:
+            ang_vel = max_ang_vel
+
+        rot_angle %= 360
+
+        car_pos.x += velocity * math.sin(math.radians(rot_angle))
+        car_pos.y += velocity * math.cos(math.radians(rot_angle))
+        velocity *= friction
+
+        rot_angle += -1 * ang_vel * velocity / max_vel  # relates turning to velocity
+        ang_vel *= rot_friction
+
+        car = pygame.transform.rotate(car_original, rot_angle)
+        car_rect = car.get_rect(center=car_pos)
         screen.blit(car, car_rect)
-    
+
     pygame.display.update()
 
     clock.tick(60)
