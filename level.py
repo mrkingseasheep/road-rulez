@@ -2,7 +2,6 @@ import pygame
 import math
 from constants import *
 
-
 class Level:
     def __init__(self, screen, game_state_manager, position=pygame.Vector2(WIDTH // 2, HEIGHT // 2)):
         self.screen = screen
@@ -19,6 +18,10 @@ class Level:
         self.max_ang_vel = 3
         self.friction = 0.9
         self.rot_friction = 0.9
+
+        self.accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
+        self.brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
+        self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
 
     def run(self):
         keys = pygame.key.get_pressed()
@@ -56,19 +59,23 @@ class Level:
         car_rect = self.car.get_rect(center=self.car_pos)
 
         self.screen.blit(self.car, car_rect)
-        self.accelerator()
-        self.brake()
-        self.pause()
+        self.draw_accelerator()
+        self.draw_brake()
+        self.draw_pause()
 
-    def accelerator(self):
-        accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
-        pygame.draw.rect(self.screen, GRAY, accelerator_rect)
+    def draw_accelerator(self):
+        pygame.draw.rect(self.screen, GRAY, self.accelerator_rect)
+
+    def draw_brake(self):
+        pygame.draw.rect(self.screen, GRAY, self.brake_rect)
+
+    def draw_pause(self):
+        pygame.draw.circle(self.screen, GRAY, self.pause_rect.center, 25)
+        pygame.draw.rect(self.screen, WHITE, (self.pause_rect.left + 6, self.pause_rect.top + 10, 10, 30))
+        pygame.draw.rect(self.screen, WHITE, (self.pause_rect.right - 16, self.pause_rect.top + 10, 10, 30))
+
+    def accelerate(self):
+        self.velocity -= self.acceleration
 
     def brake(self):
-        brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
-        pygame.draw.rect(self.screen, GRAY, brake_rect)
-
-    def pause(self):
-        pygame.draw.circle(self.screen, GRAY, (WIDTH // 10 * 9.5, HEIGHT // 10), 25)
-        pygame.draw.rect(self.screen, WHITE, (WIDTH // 10 * 9.5 - 14, HEIGHT // 10 - 15, 10, 30))
-        pygame.draw.rect(self.screen, WHITE, (WIDTH // 10 * 9.5 + 6, HEIGHT // 10 - 15, 10, 30))
+        self.velocity += self.acceleration * 0.2
