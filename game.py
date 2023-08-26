@@ -3,6 +3,7 @@ import sys
 import pygame
 from pause import Pause
 from gameStateManager import GameStateManager
+from tutorial import Tutorial
 from level import Level
 from menu import Menu
 from constants import *
@@ -15,14 +16,16 @@ class Game:
 
         pygame.display.set_caption("TITLE | Ignition Hacks")
         pygame.display.set_icon(pygame.image.load("./Graphics/Logo.png"))
-        self.SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+        # self.SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+        self.SCREEN = SCREEN
         self.CLOCK = pygame.time.Clock()
 
         self.gameStateManager = GameStateManager("menu")
         self.menu = Menu(self.SCREEN, self.gameStateManager)
         self.level = Level(self.SCREEN, self.gameStateManager)
         self.pause = Pause(self.SCREEN, self.gameStateManager)
-        self.states = {"menu": self.menu, "level": self.level, "pause": self.pause}
+        self.tutorial = Tutorial(self.SCREEN, self.gameStateManager)
+        self.states = {"menu": self.menu, "level": self.level, "pause": self.pause, "tutorial": self.tutorial}
 
         self.objs = []
         self.obj_rects = []
