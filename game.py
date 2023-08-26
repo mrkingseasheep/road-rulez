@@ -1,5 +1,5 @@
 import sys
-
+import os
 import pygame
 from pause import Pause
 from gameStateManager import GameStateManager
@@ -15,7 +15,7 @@ class Game:
         self.FPS = 60
 
         pygame.display.set_caption("TITLE | Ignition Hacks")
-        pygame.display.set_icon(pygame.image.load("./Graphics/Logo.png"))
+        pygame.display.set_icon(pygame.image.load(os.path.join("Graphics", "Logo.png")))
         # self.SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
         self.SCREEN = SCREEN
         self.CLOCK = pygame.time.Clock()

@@ -1,4 +1,5 @@
 import pygame
+import os
 
 pygame.init()
 infoObject = pygame.display.Info()
@@ -8,10 +9,10 @@ TITLE = "Driving Test Game CHANGE"
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
-BACKGROUND = pygame.transform.scale(pygame.image.load("./Graphics/Background.png").convert_alpha(), (WIDTH, HEIGHT))
+BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("Graphics", "Background.png")).convert_alpha(), (WIDTH, HEIGHT))
 BACKGROUND_RECT = BACKGROUND.get_rect()
-FONT = pygame.font.SysFont("./Font/PoetsenOne-Regular.ttf", 40)
-CAR_ORIGINAL = pygame.image.load('./Graphics/Car.png')
+FONT = pygame.font.SysFont(os.path.join("Graphics", "PoetsenOne-Regular.ttf"), 40)
+CAR_ORIGINAL = pygame.image.load(os.path.join("Graphics", "Car.png"))
 
 BROWN = (194, 114, 77)
 BLACK = (0, 0, 0)
