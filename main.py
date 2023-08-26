@@ -1,5 +1,6 @@
 import pygame
 import sys
+import math
 
 pygame.init()
 
@@ -11,43 +12,43 @@ WIDTH = screen.get_width()
 HEIGHT = screen.get_height()
 
 clock = pygame.time.Clock()
-running = True
-dt = 0
 
 player_pos = pygame.Vector2(WIDTH // 2, HEIGHT // 2)
-car = pygame.image.load('car.png')
+car_original = pygame.image.load('./Graphics/Car.png')
+car = car_original
+rotation_angle = 0
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-            sys.exit()
             pygame.quit()
-
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("purple")
-
-    #pygame.draw.circle(screen, "red", player_pos, 40)
-    screen.blit(car,(player_pos))
+            sys.exit()
+        
+    screen.fill("black")
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+        movement = pygame.Vector2(0, -5)
+        movement.rotate_ip(-rotation_angle)
+        player_pos += movement
+    elif keys[pygame.K_s]:
+        movement = pygame.Vector2(0, 5)
+        movement.rotate_ip(-rotation_angle)
+        player_pos += movement
+    elif keys[pygame.K_a]:
+        rotation_angle += 5
+        if rotation_angle >= 360:
+            rotation_angle -= 360
+            
+    elif keys[pygame.K_d]:
+        rotation_angle -= 5
+        if rotation_angle < 0:
+            rotation_angle += 360
+    
+    car = pygame.transform.rotate(car_original, rotation_angle)
+    car_rect = car.get_rect(center = player_pos)
+    screen.blit(car, car_rect)
+    
+    pygame.display.update()
 
-    # flip() the display to put your work on screen
-    pygame.display.flip()
-
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000
-
-pygame.quit()
+    clock.tick(60)
