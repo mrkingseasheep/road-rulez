@@ -20,6 +20,8 @@ class Game:
         self.CLOCK = pygame.time.Clock()
 
         self.wheel_clicked = False
+        self.acceleration_intensity = 0
+        self.brake_intensity = 0
         
         self.gameStateManager = GameStateManager("menu")
         self.menu = Menu(self.SCREEN, self.gameStateManager)
@@ -95,8 +97,12 @@ class Game:
                                 touch_x, touch_y = touch.x, touch.y
                             if self.level.accelerator_rect.collidepoint(touch_x, touch_y):
                                 self.level.accelerate()
+                                self.acceleration_intensity += 1
+                                self.velocity -= self.acceleration * self.acceleration_intensity / 100
                             elif self.level.brake_rect.collidepoint(touch_x, touch_y):
                                 self.level.brake()
+                                self.brake_intensity += 1
+                                self.velocity += self.acceleration * self.brake_intensity
                             elif self.level.wheel_rect.collidepoint(touch_x, touch_y):
                                 self.wheel_clicked = True
                                 dx, dy = touch_x - self.level.wheel_rect.centerx, touch_y - self.level.wheel_rect.centery
@@ -106,6 +112,8 @@ class Game:
 
                 elif event.type == pygame.FINGERUP:
                     self.wheel_clicked = False
+                    self.acceleration_intensity = 0
+                    self.brake_intensity = 0
 
                 if self.wheel_clicked:
                     if hasattr(event, 'touches'):
