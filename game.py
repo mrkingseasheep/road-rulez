@@ -19,6 +19,8 @@ class Game:
         self.SCREEN = SCREEN
         self.CLOCK = pygame.time.Clock()
 
+        self.wheel_clicked = False
+        
         self.gameStateManager = GameStateManager("menu")
         self.menu = Menu(self.SCREEN, self.gameStateManager)
         self.level = Level(self.SCREEN, self.gameStateManager)
@@ -57,7 +59,6 @@ class Game:
                                 dx, dy = event.pos[0] - self.level.wheel_rect.centerx, event.pos[1] - self.level.wheel_rect.centery
                                 angle = math.degrees(math.atan2(dy, dx))
                                 self.level.rotate_wheel(angle)
-                                self.level.rot_angle += angle
 
                         elif self.gameStateManager.get_state() == "tutorial":
                             if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
@@ -92,19 +93,29 @@ class Game:
                         if hasattr(event, 'touches'):
                             for touch in event.touches:
                                 touch_x, touch_y = touch.x, touch.y
-                                if self.level.accelerator_rect.collidepoint(touch_x, touch_y):
-                                    self.level.accelerate()
-                                elif self.level.brake_rect.collidepoint(touch_x, touch_y):
-                                    self.level.brake()
-                                elif self.level.wheel_rect.collidepoint(touch_x, touch_y):
-                                    self.wheel_clicked = True
-                                    dx, dy = event.pos[0] - self.level.wheel_rect.centerx, event.pos[1] - self.level.wheel_rect.centery
-                                    angle = math.degrees(math.atan2(dy, dx))
-                                    self.level.rotate_wheel(angle)
-                                    self.level.rot_angle += angle
+                            if self.level.accelerator_rect.collidepoint(touch_x, touch_y):
+                                self.level.accelerate()
+                            elif self.level.brake_rect.collidepoint(touch_x, touch_y):
+                                self.level.brake()
+                            elif self.level.wheel_rect.collidepoint(touch_x, touch_y):
+                                self.wheel_clicked = True
+                                dx, dy = touch_x - self.level.wheel_rect.centerx, touch_y - self.level.wheel_rect.centery
+                                angle = math.degrees(math.atan2(dy, dx))
+                                self.level.rotate_wheel(angle)
+                                self.level.rot_angle = max(min(angle, 45), -45)
 
                 elif event.type == pygame.FINGERUP:
                     self.wheel_clicked = False
+
+                if self.wheel_clicked:
+                    if hasattr(event, 'touches'):
+                        for touch in event.touches:
+                            touch_x, touch_y = touch.x, touch.y
+                            rel_x = touch_x - self.level.wheel_rect.centerx
+                            rel_y = touch_y - self.level.wheel_rect.centery
+                            angle = math.degrees(math.atan2(rel_y, rel_x))
+                            self.level.rotate_wheel(angle)
+                            self.level.rot_angle = max(min(angle, 45), -45)
 
             SCREEN.fill(BLACK)
             self.states[self.gameStateManager.get_state()].run()

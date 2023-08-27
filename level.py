@@ -121,8 +121,11 @@ class Level:
             mouse_pos = pygame.mouse.get_pos()
             rel_x = mouse_pos[0] - self.wheel_rect.centerx
             rel_y = mouse_pos[1] - self.wheel_rect.centery
-            self.rot_angle = math.degrees(math.atan2(rel_y, rel_x))
+            angle = math.degrees(math.atan2(rel_y, rel_x))
+            self.rot_angle = max(min(angle, 45), -45)
+    
         self.screen.blit(rotated_wheel, self.wheel_rect)
+
 
     def rotate_wheel(self, angle):
         self.rot_angle += angle
