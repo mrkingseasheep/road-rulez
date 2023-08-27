@@ -17,7 +17,6 @@ class Game:
 
         pygame.display.set_caption("TITLE | Ignition Hacks")
         pygame.display.set_icon(pygame.image.load(os.path.join("Graphics", "Logo.png")))
-        # self.SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
         self.SCREEN = SCREEN
         self.CLOCK = pygame.time.Clock()
 

@@ -1,5 +1,6 @@
 import pygame
 import math
+from minimap import Minimap
 from constants import *
 
 class Level:
@@ -22,6 +23,7 @@ class Level:
         self.accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
         self.brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
         self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
+        self.minimap = Minimap(self.screen)  # image dimensions
 
     def run(self):
         keys = pygame.key.get_pressed()
@@ -56,12 +58,14 @@ class Level:
         self.ang_vel *= self.rot_friction
 
         self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
-        car_rect = self.car.get_rect(center=self.car_pos)
+        # car_rect = self.car.get_rect(center=self.car_pos)
+        car_rect = (WIDTH // 2, HEIGHT // 2)
 
         self.screen.blit(self.car, car_rect)
         self.draw_accelerator()
         self.draw_brake()
         self.draw_pause()
+        self.minimap.update_minimap(self.car_pos.x, self.car_pos.y)
 
     def draw_accelerator(self):
         pygame.draw.rect(self.screen, GRAY, self.accelerator_rect)
@@ -76,6 +80,10 @@ class Level:
 
     def accelerate(self):
         self.velocity -= self.acceleration
+
+    def accelerator(self):
+        accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
+        pygame.draw.rect(self.screen, GRAY, accelerator_rect)
 
     def brake(self):
         self.velocity += self.acceleration * 0.2
