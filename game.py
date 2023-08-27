@@ -1,5 +1,6 @@
 import sys
 import os
+import math
 import pygame
 from pygame import locals
 from pause import Pause
@@ -88,6 +89,11 @@ class Game:
                                     self.level.accelerate()
                                 elif self.level.brake_rect.collidepoint(touch_x, touch_y):
                                     self.level.brake()
+                                elif self.wheel_rect.collidepoint(touch_x, touch_y):                            
+                                    dx = touch_x - self.wheel_rect.centerx
+                                    dy = touch_y - self.wheel_rect.centery
+                                    angle = math.degrees(math.atan2(dy, dx))
+                                    self.level.rotate_wheel(angle)
 
             SCREEN.fill("black")
             self.states[self.gameStateManager.get_state()].run()
