@@ -33,6 +33,7 @@ class Level:
         self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
         self.minimap = Minimap(self.screen)
 
+        self.wheel_clicked = False
         self.wheel_image = pygame.image.load(os.path.join("Graphics", "SteeringWheel.png"))
         self.wheel_rect = self.wheel_image.get_rect(midbottom=(WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10))
 
@@ -104,6 +105,12 @@ class Level:
     def draw_wheel(self):
         rotated_wheel = pygame.transform.rotate(self.wheel_image, self.rot_angle)
         self.wheel_rect = rotated_wheel.get_rect(midbottom=(WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10))
+    
+        if self.wheel_clicked:
+            mouse_pos = pygame.mouse.get_pos()
+            rel_x = mouse_pos[0] - self.wheel_rect.centerx
+            rel_y = mouse_pos[1] - self.wheel_rect.centery
+            self.rot_angle = math.degrees(math.atan2(rel_y, rel_x))
         self.screen.blit(rotated_wheel, self.wheel_rect)
 
     def rotate_wheel(self, angle):
