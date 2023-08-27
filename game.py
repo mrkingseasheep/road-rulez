@@ -15,7 +15,7 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        pygame.display.set_caption("TITLE | Ignition Hacks")
+        pygame.display.set_caption("Road Rulez | Ignition Hacks")
         pygame.display.set_icon(pygame.image.load(os.path.join("Graphics", "Logo.png")))
         self.SCREEN = SCREEN
         self.CLOCK = pygame.time.Clock()

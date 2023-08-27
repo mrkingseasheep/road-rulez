@@ -6,7 +6,7 @@ infoObject = pygame.display.Info()
 
 WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
 # WIDTH, HEIGHT = 1080, 720
-TITLE = "Driving Test Game CHANGE"
+TITLE = "Road Rulez - G1/2 Test Prep"
 FPS = 30
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
