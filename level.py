@@ -26,15 +26,15 @@ class Level:
         self.map = Map(self.screen)
 
         self.accelerator_image = pygame.image.load(os.path.join("Graphics", "Accelerator.png"))
-        self.accelerator_rect = self.accelerator_image.get_rect(center = (WIDTH // 10 * 9, HEIGHT // 10 * 8))
+        self.accelerator_rect = self.accelerator_image.get_rect(center=(WIDTH // 10 * 9, HEIGHT // 10 * 8))
 
         self.brake_image = pygame.image.load(os.path.join("Graphics", "Brake.png"))
-        self.brake_rect = self.brake_image.get_rect(center = (WIDTH // 10 * 8, HEIGHT // 10 * 8.5))
+        self.brake_rect = self.brake_image.get_rect(center=(WIDTH // 10 * 8, HEIGHT // 10 * 8.5))
         self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
         self.minimap = Minimap(self.screen)  # image dimensions
 
         self.wheel_image = pygame.image.load(os.path.join("Graphics", "SteeringWheel.png"))
-        self.wheel_rect = self.wheel_image.get_rect(bottomleft = (WIDTH // 10, HEIGHT - HEIGHT // 10))
+        self.wheel_rect = self.wheel_image.get_rect(bottomleft=(WIDTH // 10, HEIGHT - HEIGHT // 10))
 
     def run(self):
         keys = pygame.key.get_pressed()
@@ -84,7 +84,7 @@ class Level:
         free_control = self.map.update_map(self.car_pos.x, self.car_pos.y)
 
         if free_control:
-            car_rect = self.car.get_rect(center=self.car_pos)
+            car_rect = self.car.get_rect(center=(self.car_pos.x % WIDTH, self.car_pos.y % HEIGHT))
             self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
             self.screen.blit(self.car, car_rect)
         else:
