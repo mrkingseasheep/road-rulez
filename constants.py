@@ -11,6 +11,8 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("Graphics", "Background.png")).convert_alpha(), (WIDTH, HEIGHT))
 BACKGROUND_RECT = BACKGROUND.get_rect()
+TUTORIAL = pygame.transform.scale(pygame.image.load(os.path.join("Graphics", "Tutorial.png")).convert_alpha(), (WIDTH, HEIGHT))
+TUTORIAL_RECT = TUTORIAL.get_rect()
 FONT = pygame.font.SysFont(os.path.join("Graphics", "PoetsenOne-Regular.ttf"), 40)
 CAR_ORIGINAL = pygame.image.load(os.path.join("Graphics", "Car.png"))
 MAP = pygame.image.load(os.path.join("Graphics", "Map.png"))

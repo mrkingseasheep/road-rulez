@@ -1,5 +1,6 @@
 import sys
 import os
+import math
 import pygame
 from pygame import locals
 from pause import Pause
@@ -8,7 +9,6 @@ from tutorial import Tutorial
 from level import Level
 from menu import Menu
 from constants import *
-
 
 class Game:
     def __init__(self):
@@ -50,6 +50,10 @@ class Game:
                             if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
                                 self.gameStateManager.set_state("pause")
 
+                        elif self.gameStateManager.get_state() == "tutorial":
+                            if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
+                                self.gameStateManager.set_state("pause")
+
                             if self.level.accelerator_rect.collidepoint(event.pos):
                                 self.level.accelerate()
                             elif self.level.brake_rect.collidepoint(event.pos):
@@ -85,6 +89,11 @@ class Game:
                                     self.level.accelerate()
                                 elif self.level.brake_rect.collidepoint(touch_x, touch_y):
                                     self.level.brake()
+                                elif self.wheel_rect.collidepoint(touch_x, touch_y):                            
+                                    dx = touch_x - self.wheel_rect.centerx
+                                    dy = touch_y - self.wheel_rect.centery
+                                    angle = math.degrees(math.atan2(dy, dx))
+                                    self.level.rotate_wheel(angle)
 
             SCREEN.fill("black")
             self.states[self.gameStateManager.get_state()].run()
