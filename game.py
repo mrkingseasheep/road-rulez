@@ -56,6 +56,8 @@ class Game:
                                 self.level.accelerate()
                             elif self.level.brake_rect.collidepoint(event.pos):
                                 self.level.brake()
+                            elif self.level.gear_rect.collidepoint(event.pos):
+                                self.level.gear()
                             elif self.level.wheel_rect.collidepoint(event.pos):
                                 self.wheel_clicked = True
                                 dx, dy = event.pos[0] - self.level.wheel_rect.centerx, event.pos[1] - self.level.wheel_rect.centery
@@ -103,6 +105,8 @@ class Game:
                                 self.level.brake()
                                 self.brake_intensity += 1
                                 self.velocity += self.acceleration * self.brake_intensity
+                            elif self.level.gear_rect.collidepoint(event.pos):
+                                self.level.gear()
                             elif self.level.wheel_rect.collidepoint(touch_x, touch_y):
                                 self.wheel_clicked = True
                                 dx, dy = touch_x - self.level.wheel_rect.centerx, touch_y - self.level.wheel_rect.centery
