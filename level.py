@@ -38,7 +38,7 @@ class Level:
 
         self.wheel_clicked = False
         self.wheel_image = pygame.image.load(os.path.join("Graphics", "SteeringWheel.png"))
-        self.wheel_rect = self.wheel_image.get_rect(midbottom=(WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10))
+        self.wheel_rect = self.wheel_image.get_rect(midbottom = (WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10))
 
     def run(self):
         keys = pygame.key.get_pressed()
@@ -151,7 +151,7 @@ class Level:
     def rotate_wheel(self, angle):
         self.rot_angle += angle
         self.wheel_image = pygame.transform.rotate(pygame.image.load(os.path.join("Graphics", "SteeringWheel.png")), self.rot_angle)
-        self.wheel_rect = self.wheel_image.get_rect(bottomleft=(WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10))
+        self.wheel_rect = self.wheel_image.get_rect(bottomleft = (WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10))
 
     def accelerate(self):
         if self.current_gear == "Drive":
