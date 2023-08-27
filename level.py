@@ -6,7 +6,7 @@ from constants import *
 
 
 class Level:
-    def __init__(self, screen, game_state_manager, position=pygame.Vector2(WIDTH // 2, HEIGHT // 2)):
+    def __init__(self, screen, game_state_manager, position=pygame.Vector2(200, 200)):
         self.screen = screen
         self.game_state_manager = game_state_manager
 
@@ -14,22 +14,22 @@ class Level:
         self.car = CAR_ORIGINAL
         self.rot_angle = 0
         self.velocity = 0
-        self.acceleration = 0.6
-        self.max_vel = 7
+        self.acceleration = 10
+        self.max_vel = 25
         self.ang_vel = 0
-        self.ang_accel = 1
+        self.ang_accel = 0.5
         self.max_ang_vel = 3
-        self.friction = 0.9
+        self.friction = 0.95
         self.rot_friction = 0.9
 
         self.minimap = Minimap(self.screen)
         self.map = Map(self.screen)
 
         self.accelerator_image = pygame.image.load(os.path.join("Graphics", "Accelerator.png"))
-        self.accelerator_rect = self.accelerator_image.get_rect(center=(WIDTH // 10 * 9, HEIGHT // 10 * 8))
+        self.accelerator_rect = self.accelerator_image.get_rect(center = (WIDTH // 10 * 9, HEIGHT // 10 * 8))
 
         self.brake_image = pygame.image.load(os.path.join("Graphics", "Brake.png"))
-        self.brake_rect = self.brake_image.get_rect(center=(WIDTH // 10 * 8, HEIGHT // 10 * 8.5))
+        self.brake_rect = self.brake_image.get_rect(center = (WIDTH // 10 * 8, HEIGHT // 10 * 8.5))
         self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
         self.minimap = Minimap(self.screen)
 
@@ -58,9 +58,17 @@ class Level:
         self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel
         self.ang_vel *= self.rot_friction
 
-        self.car_pos.x += self.velocity * math.sin(math.radians(self.rot_angle))
-        self.car_pos.y += self.velocity * math.cos(math.radians(self.rot_angle))
-        self.velocity *= self.friction
+        dist_x = self.velocity * math.sin(math.radians(self.rot_angle))
+        dist_y = self.velocity * math.cos(math.radians(self.rot_angle))
+
+        if 0 < self.car_pos.x + dist_x < MAP_X - 67:
+            self.car_pos.x += dist_x
+        else:
+            self.velocity = 0
+        if 0 < self.car_pos.y + dist_y < MAP_Y - 67:
+            self.car_pos.y += dist_y
+        else:
+            self.velocity = 0
 
         self.wheel_rect.bottomleft = (WIDTH // 10 + 10, HEIGHT - HEIGHT // 10 - 10)
 
@@ -77,6 +85,17 @@ class Level:
 
         self.draw_wheel()
         self.screen.blit(self.car, car_rect)
+        self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel
+        self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
+        car_rect = (WIDTH // 2, HEIGHT // 2)
+
+        self.ang_vel *= self.rot_friction
+        self.velocity *= self.friction
+
+        self.map.update_map(self.car_pos.x, self.car_pos.y)
+        self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
+        self.screen.blit(self.car, car_rect)
+
         self.draw_accelerator()
         self.draw_brake()
         self.draw_pause()

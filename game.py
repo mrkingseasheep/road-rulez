@@ -13,7 +13,6 @@ from constants import *
 class Game:
     def __init__(self):
         pygame.init()
-        self.FPS = 60
 
         pygame.display.set_caption("TITLE | Ignition Hacks")
         pygame.display.set_icon(pygame.image.load(os.path.join("Graphics", "Logo.png")))
@@ -101,5 +100,5 @@ class Game:
 
             SCREEN.fill(BLACK)
             self.states[self.gameStateManager.get_state()].run()
-            self.CLOCK.tick(self.FPS)
+            self.CLOCK.tick(FPS)
             pygame.display.update()
