@@ -53,6 +53,7 @@ class Game:
                             elif self.level.brake_rect.collidepoint(event.pos):
                                 self.level.brake()
                             elif self.level.wheel_rect.collidepoint(event.pos):
+                                self.wheel_clicked = True
                                 dx, dy = event.pos[0] - self.level.wheel_rect.centerx, event.pos[1] - self.level.wheel_rect.centery
                                 angle = math.degrees(math.atan2(dy, dx))
                                 self.level.rotate_wheel(angle)
@@ -83,6 +84,9 @@ class Game:
                                 pygame.quit()
                                 sys.exit()
 
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    self.wheel_clicked = False
+
                 elif event.type == locals.FINGERDOWN:
                     if self.gameStateManager.get_state() == "level":
                         if hasattr(event, 'touches'):
@@ -93,10 +97,14 @@ class Game:
                                 elif self.level.brake_rect.collidepoint(touch_x, touch_y):
                                     self.level.brake()
                                 elif self.level.wheel_rect.collidepoint(touch_x, touch_y):
+                                    self.wheel_clicked = True
                                     dx, dy = event.pos[0] - self.level.wheel_rect.centerx, event.pos[1] - self.level.wheel_rect.centery
                                     angle = math.degrees(math.atan2(dy, dx))
                                     self.level.rotate_wheel(angle)
                                     self.level.rot_angle += angle
+
+                elif event.type == pygame.FINGERUP:
+                    self.wheel_clicked = False
 
             SCREEN.fill(BLACK)
             self.states[self.gameStateManager.get_state()].run()
