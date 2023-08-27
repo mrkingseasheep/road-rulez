@@ -13,6 +13,8 @@ BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("Graphics", "
 BACKGROUND_RECT = BACKGROUND.get_rect()
 FONT = pygame.font.SysFont(os.path.join("Graphics", "PoetsenOne-Regular.ttf"), 40)
 CAR_ORIGINAL = pygame.image.load(os.path.join("Graphics", "Car.png"))
+MAP = pygame.image.load(os.path.join("Graphics", "Map.png"))
+MAP_SCALED = pygame.transform.scale(MAP, (MAP.get_width() // 10, MAP.get_height() // 10))
 
 BROWN = (194, 114, 77)
 BLACK = (0, 0, 0)
