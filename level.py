@@ -1,7 +1,9 @@
 import pygame
 import math
 from minimap import Minimap
+from map import Map
 from constants import *
+
 
 class Level:
     def __init__(self, screen, game_state_manager, position=pygame.Vector2(WIDTH // 2, HEIGHT // 2)):
@@ -20,7 +22,8 @@ class Level:
         self.friction = 0.9
         self.rot_friction = 0.9
 
-        self.minimap = Minimap(self.screen)  # image dimensions
+        self.minimap = Minimap(self.screen)
+        self.map = Map(self.screen)
 
         self.accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
         self.brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
@@ -59,16 +62,32 @@ class Level:
         self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel  # relates turning to velocity
         self.ang_vel *= self.rot_friction
 
-        self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
-        # car_rect = self.car.get_rect(center=self.car_pos)
         car_rect = (WIDTH // 2, HEIGHT // 2)
 
-        self.screen.blit(self.car, car_rect)
+        # if 0 < self.car_pos.x - HALF_MAP_SIZE and self.car_pos.x + HALF_MAP_SIZE < MAP_X:
+        #     car_rect = self.car.get_rect(center=(self.car_pos.x, HEIGHT // 2))
+        # elif 0 < self.car_pos.y - HALF_MAP_SIZE and self.car_pos.y + HALF_MAP_SIZE < MAP_Y:
+        #     car_rect = self.car.get_rect(center=self.car_pos)
+        #     pass  # TODO help me
+        # else:
+        #     pass
+
+        # background = pygame.transform.rotate(MAP, self.rot_angle)
+
+        free_control = self.map.update_map(self.car_pos.x, self.car_pos.y)
+
+        if free_control:
+            car_rect = self.car.get_rect(center=self.car_pos)
+            self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
+            self.screen.blit(self.car, car_rect)
+        else:
+            self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
+            self.screen.blit(self.car, car_rect)
+
+        # for car rotation
         self.draw_accelerator()
         self.draw_brake()
         self.draw_pause()
-        self.minimap.update_minimap(self.car_pos.x, self.car_pos.y)
-
         self.minimap.update_minimap(self.car_pos.x, self.car_pos.y)
 
     def accelerator(self):

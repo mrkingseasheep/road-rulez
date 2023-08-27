@@ -16,6 +16,13 @@ CAR_ORIGINAL = pygame.image.load(os.path.join("Graphics", "Car.png"))
 MAP = pygame.image.load(os.path.join("Graphics", "Map.png"))
 MAP_SCALED = pygame.transform.scale(MAP, (MAP.get_width() // 10, MAP.get_height() // 10))
 
+MAP_SIZE = min(WIDTH, HEIGHT) // 3
+HALF_MAP_SIZE = MAP_SIZE // 2
+MARGIN_SIZE = min(WIDTH, HEIGHT) // 80
+MINI_X, MINI_Y = 394, 677
+MAP_X, MAP_Y = 3944, 6775
+HALF_X, HALF_Y = MAP_X // 2, MAP_Y // 2
+
 BROWN = (194, 114, 77)
 BLACK = (0, 0, 0)
 GRAY = (217, 217, 217)
