@@ -5,7 +5,9 @@ pygame.init()
 infoObject = pygame.display.Info()
 
 WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h
+# WIDTH, HEIGHT = 1080, 720
 TITLE = "Driving Test Game CHANGE"
+FPS = 30
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
@@ -29,5 +31,3 @@ BROWN = (194, 114, 77)
 BLACK = (0, 0, 0)
 GRAY = (217, 217, 217)
 WHITE = (255, 255, 255)
-
-# ur dumb

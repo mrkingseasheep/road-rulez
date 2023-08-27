@@ -6,7 +6,7 @@ from constants import *
 
 
 class Level:
-    def __init__(self, screen, game_state_manager, position=pygame.Vector2(WIDTH // 2, HEIGHT // 2)):
+    def __init__(self, screen, game_state_manager, position=pygame.Vector2(200, 200)):
         self.screen = screen
         self.game_state_manager = game_state_manager
 
@@ -14,12 +14,12 @@ class Level:
         self.car = CAR_ORIGINAL
         self.rot_angle = 0
         self.velocity = 0
-        self.acceleration = 0.6
-        self.max_vel = 7
+        self.acceleration = 10
+        self.max_vel = 25
         self.ang_vel = 0
-        self.ang_accel = 1
+        self.ang_accel = 0.5
         self.max_ang_vel = 3
-        self.friction = 0.9
+        self.friction = 0.95
         self.rot_friction = 0.9
 
         self.minimap = Minimap(self.screen)
@@ -60,38 +60,29 @@ class Level:
 
         self.rot_angle %= 360
 
-        self.car_pos.x += self.velocity * math.sin(math.radians(self.rot_angle))
-        self.car_pos.y += self.velocity * math.cos(math.radians(self.rot_angle))
-        self.velocity *= self.friction
+        dist_x = self.velocity * math.sin(math.radians(self.rot_angle))
+        dist_y = self.velocity * math.cos(math.radians(self.rot_angle))
+
+        if 0 < self.car_pos.x + dist_x < MAP_X - 67:
+            self.car_pos.x += dist_x
+        else:
+            self.velocity = 0
+        if 0 < self.car_pos.y + dist_y < MAP_Y - 67:
+            self.car_pos.y += dist_y
+        else:
+            self.velocity = 0
 
         self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel
-        self.ang_vel *= self.rot_friction
-
         self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
-        car_rect = self.car.get_rect(center=self.car_pos)
         car_rect = (WIDTH // 2, HEIGHT // 2)
 
-        # if 0 < self.car_pos.x - HALF_MAP_SIZE and self.car_pos.x + HALF_MAP_SIZE < MAP_X:
-        #     car_rect = self.car.get_rect(center=(self.car_pos.x, HEIGHT // 2))
-        # elif 0 < self.car_pos.y - HALF_MAP_SIZE and self.car_pos.y + HALF_MAP_SIZE < MAP_Y:
-        #     car_rect = self.car.get_rect(center=self.car_pos)
-        #     pass  # TODO help me
-        # else:
-        #     pass
+        self.ang_vel *= self.rot_friction
+        self.velocity *= self.friction
 
-        # background = pygame.transform.rotate(MAP, self.rot_angle)
+        self.map.update_map(self.car_pos.x, self.car_pos.y)
+        self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
+        self.screen.blit(self.car, car_rect)
 
-        free_control = self.map.update_map(self.car_pos.x, self.car_pos.y)
-
-        if free_control:
-            car_rect = self.car.get_rect(center=(self.car_pos.x % WIDTH, self.car_pos.y % HEIGHT))
-            self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
-            self.screen.blit(self.car, car_rect)
-        else:
-            self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
-            self.screen.blit(self.car, car_rect)
-
-        # for car rotation
         self.draw_accelerator()
         self.draw_brake()
         self.draw_pause()
