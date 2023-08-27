@@ -51,7 +51,7 @@ class Quiz:
         self.screen.blit(question, question.get_rect(center=QUESTION.center))
 
         for opt in new_question.get_options():
-            answer_area = ANS_BOX.pop()
+            answer_area = ANS_BOX.pop(0)
             pygame.draw.rect(self.screen, LIGHT_GRAY, answer_area)
             answer = ANSWER_FONT.render(opt, True, BLACK)
             answer_area = answer.get_rect(center=answer_area.center)
@@ -73,6 +73,7 @@ class Quiz:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
                     answer = new_question.get_answer()
+                    print(answer)
 
                     if ANS1.collidepoint(mouse_pos) and answer == 1:
                         self.show_correct(new_question, True)
@@ -91,30 +92,21 @@ class Quiz:
                         done = True
                         break
                     elif ANS1.collidepoint(mouse_pos) or ANS2.collidepoint(mouse_pos) or ANS3.collidepoint(mouse_pos) or ANS4.collidepoint(mouse_pos):
-                        correct = False
-                        self.show_correct(new_question, correct)
+                        self.show_correct(new_question, False)
                         done = True
                         break
             if done:
+                self.gameStateManager.set_state("level")
                 break
 
     def show_correct(self, new_question, correct):
         ANS_BOX = [ANS1, ANS2, ANS3, ANS4]
-
-        if correct:
-            SCREEN.fill(LIGHT_LIGHT_GREEN)
-            pygame.draw.rect(self.screen, LIGHT_GREEN, QUESTION)
-            question = QUESTION_FONT.render(new_question.get_question(), True, GREEN)
-            self.screen.blit(question, question.get_rect(center=QUESTION.center))
-        else:
-            SCREEN.fill(LIGHT_LIGHT_RED)
-            pygame.draw.rect(self.screen, LIGHT_RED, QUESTION)
-            question = QUESTION_FONT.render(new_question.get_question(), True, RED)
-            self.screen.blit(question, question.get_rect(center=QUESTION.center))
-
+        SCREEN.fill(DARK_GRAY)
+        question = QUESTION_FONT.render(new_question.get_question(), True, GRAY)
+        self.screen.blit(question, question.get_rect(center=QUESTION.center))
 
         for i, opt in enumerate(new_question.get_options()):
-            answer_area = ANS_BOX.pop()
+            answer_area = ANS_BOX.pop(0)
             if i == new_question.get_answer():
                 pygame.draw.rect(self.screen, LIGHT_GREEN, answer_area)
                 answer = ANSWER_FONT.render(opt, True, GREEN)
@@ -126,5 +118,5 @@ class Quiz:
 
         pygame.display.update()
 
-        time.sleep(3)
+        time.sleep(2)
         self.gameStateManager.set_state("level")

@@ -2,6 +2,7 @@ import sys
 import os
 import math
 import pygame
+import random
 from pygame import locals
 from pause import Pause
 from gameStateManager import GameStateManager
@@ -35,11 +36,16 @@ class Game:
         self.obj_rects = []
 
     def run(self):
+        pygame.time.set_timer(pygame.USEREVENT, random.randrange(10000, 15000))
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
+                if event.type == pygame.USEREVENT:
+                    self.gameStateManager.set_state("quiz")
+                    pygame.time.set_timer(pygame.USEREVENT, random.randrange(15000, 25000))
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
