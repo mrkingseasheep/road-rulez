@@ -25,6 +25,7 @@ class Level:
         self.accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
         self.brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
         self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
+        self.minimap = Minimap(self.screen)  # image dimensions
 
     def run(self):
         keys = pygame.key.get_pressed()
@@ -66,6 +67,7 @@ class Level:
         self.draw_accelerator()
         self.draw_brake()
         self.draw_pause()
+        self.minimap.update_minimap(self.car_pos.x, self.car_pos.y)
 
         self.minimap.update_minimap(self.car_pos.x, self.car_pos.y)
 
@@ -85,6 +87,10 @@ class Level:
 
     def accelerate(self):
         self.velocity -= self.acceleration
+
+    def accelerator(self):
+        accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
+        pygame.draw.rect(self.screen, GRAY, accelerator_rect)
 
     def brake(self):
         self.velocity += self.acceleration * 0.2
