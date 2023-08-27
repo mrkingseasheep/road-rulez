@@ -1,9 +1,6 @@
-from constants import *
+import pygame.draw
 
-MAP_SIZE = min(WIDTH, HEIGHT) // 3
-MARGIN_SIZE = min(WIDTH, HEIGHT) // 80
-MINI_X = 394
-MINI_Y = 677
+from constants import *
 
 
 class Minimap:
@@ -23,4 +20,5 @@ class Minimap:
         elif top + MAP_SIZE > MINI_Y:
             top = MINI_Y - MAP_SIZE
 
+        pygame.draw.rect(self.screen, "black", (0, 0, 2 * MARGIN_SIZE + MAP_SIZE, 2 * MARGIN_SIZE + MAP_SIZE))
         self.screen.blit(MAP_SCALED, (MARGIN_SIZE, MARGIN_SIZE), (left, top, MAP_SIZE, MAP_SIZE))
