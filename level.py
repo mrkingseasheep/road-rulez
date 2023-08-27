@@ -17,10 +17,10 @@ class Level:
         self.acceleration = 10
         self.max_vel = 25
         self.ang_vel = 0
-        self.ang_accel = 0.5
-        self.max_ang_vel = 3
+        self.ang_accel = 10
+        self.max_ang_vel = 5
         self.friction = 0.95
-        self.rot_friction = 0.9
+        self.rot_friction = 0.95
 
         self.minimap = Minimap(self.screen)
         self.map = Map(self.screen)
@@ -77,26 +77,15 @@ class Level:
         car_rect = self.car.get_rect(center=self.car_pos)
 
         free_control = self.map.update_map(self.car_pos.x, self.car_pos.y)
-
-        if free_control:
-            self.screen.blit(self.car, car_rect)
-        else:
-            self.car = CAR_ORIGINAL
-            self.screen.blit(self.car, car_rect)
-
+        self.map.update_map(self.car_pos.x, self.car_pos.y)
         self.draw_wheel()
-        self.screen.blit(self.car, car_rect)
         self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel
         self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
         car_rect = (WIDTH // 2, HEIGHT // 2)
-
         self.ang_vel *= self.rot_friction
         self.velocity *= self.friction
-
-        self.map.update_map(self.car_pos.x, self.car_pos.y)
         self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
         self.screen.blit(self.car, car_rect)
-
         self.draw_accelerator()
         self.draw_brake()
         self.draw_pause()

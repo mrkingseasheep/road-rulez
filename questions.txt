@@ -1,0 +1,48 @@
+! Do you slow down or speed up when merging to a left lane?
+1
+- Slow down
+- Speed up
+
+! Who has the right of way at an all way stop, car on the left or car on the right?
+0
+- Car on the right
+- Car on the left
+
+! Can you pass a slow vehicle over a single solid yellow line?
+0
+- Yes but proceed with caution
+- No, passing is not permitted
+- Always pass slow vehicles and honk at them for not maintaining flow of traffic
+
+! At an intersection, the traffic light is red, but a police officer motions you to go through. What should you do?
+0
+- Go through
+- Wait for the light to turn green
+
+! Is it legal to turn right on a red light?
+2
+- Only from a one-way street to another one-way street
+- Only from a two-way street to another two-way street
+- Only after the vehicle has come to a complete stop yielding right of way.
+- Only from a one-way street to a two-way street
+
+! What is the maximum speed limit in a residential area?
+3
+- 60 km/h (37 mph).
+- 50 km/h (31 mph).
+- 70 km/h (43 mph).
+- 40 km/h (25 mph).
+
+! What's the proper way to make a left turn at an intersection?
+2
+- Turn left from any lane.
+- Turn left from the far right lane.
+- Yield to oncoming traffic, then turn left from the left lane.
+- Turn left without yielding to anyone.
+
+! When parking uphill on a street with a curb, which way should you turn your wheels?
+2
+- Toward the curb.
+- Parallel to the curb.
+- Away from the curb.
+- It doesn't matter.
