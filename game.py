@@ -6,6 +6,7 @@ from pygame import locals
 from pause import Pause
 from gameStateManager import GameStateManager
 from tutorial import Tutorial
+from quiz import Quiz
 from level import Level
 from menu import Menu
 from constants import *
@@ -24,8 +25,8 @@ class Game:
         self.level = Level(self.SCREEN, self.gameStateManager)
         self.pause = Pause(self.SCREEN, self.gameStateManager)
         self.tutorial = Tutorial(self.SCREEN, self.gameStateManager)
-        self.states = {"menu": self.menu, "level": self.level, "pause": self.pause, "tutorial": self.tutorial}
-
+        self.quiz = Quiz(self.SCREEN, self.gameStateManager)
+        self.states = {"menu": self.menu, "level": self.level, "pause": self.pause, "tutorial": self.tutorial, "quiz": self.quiz}
         self.objs = []
         self.obj_rects = []
 

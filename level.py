@@ -14,13 +14,13 @@ class Level:
         self.car = CAR_ORIGINAL
         self.rot_angle = 0
         self.velocity = 0
-        self.acceleration = 10
-        self.max_vel = 25
+        self.acceleration = 4
+        self.max_vel = 10
         self.ang_vel = 0
-        self.ang_accel = 10
-        self.max_ang_vel = 5
-        self.friction = 0.95
-        self.rot_friction = 0.95
+        self.ang_accel = 0.5
+        self.max_ang_vel = 2
+        self.friction = 0.9
+        self.rot_friction = 0.9
 
         self.minimap = Minimap(self.screen)
         self.map = Map(self.screen)
