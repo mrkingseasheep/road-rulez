@@ -20,10 +20,13 @@ class Level:
         self.friction = 0.9
         self.rot_friction = 0.9
 
-        self.minimap = Minimap(self.screen)  # image dimensions
+        self.minimap = Minimap(self.screen)
 
-        self.accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
-        self.brake_rect = pygame.Rect(WIDTH // 10 * 8, HEIGHT // 10 * 8.5, 80, 60)
+        self.accelerator_image = pygame.image.load(os.path.join("Graphics", "Accelerator.png"))
+        self.accelerator_rect = self.accelerator_image.get_rect(center=(WIDTH // 10 * 9, HEIGHT // 10 * 8))
+
+        self.brake_image = pygame.image.load(os.path.join("Graphics", "Brake.png"))
+        self.brake_rect = self.brake_image.get_rect(center=(WIDTH // 10 * 8, HEIGHT // 10 * 8.5))
         self.pause_rect = pygame.Rect(WIDTH // 10 * 9.5 - 25, HEIGHT // 10 - 25, 50, 50)
 
     def run(self):
@@ -38,7 +41,6 @@ class Level:
         if keys[pygame.K_d]:
             self.ang_vel -= self.ang_accel
 
-        # keeps velocity and ang_vel in bounds
         if self.velocity < -self.max_vel:
             self.velocity = -self.max_vel
         elif self.velocity > self.max_vel:
@@ -55,11 +57,11 @@ class Level:
         self.car_pos.y += self.velocity * math.cos(math.radians(self.rot_angle))
         self.velocity *= self.friction
 
-        self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel  # relates turning to velocity
+        self.rot_angle += -1 * self.ang_vel * self.velocity / self.max_vel
         self.ang_vel *= self.rot_friction
 
         self.car = pygame.transform.rotate(CAR_ORIGINAL, self.rot_angle)
-        # car_rect = self.car.get_rect(center=self.car_pos)
+        car_rect = self.car.get_rect(center = self.car_pos)
         car_rect = (WIDTH // 2, HEIGHT // 2)
 
         self.screen.blit(self.car, car_rect)
@@ -69,19 +71,16 @@ class Level:
 
         self.minimap.update_minimap(self.car_pos.x, self.car_pos.y)
 
-    def accelerator(self):
-        accelerator_rect = pygame.Rect(WIDTH // 10 * 9, HEIGHT // 10 * 8, 45, 115)
-        pygame.draw.rect(self.screen, GRAY, accelerator_rect)
     def draw_accelerator(self):
-        pygame.draw.rect(self.screen, GRAY, self.accelerator_rect)
+        self.screen.blit(self.accelerator_image, self.accelerator_rect)
 
     def draw_brake(self):
-        pygame.draw.rect(self.screen, GRAY, self.brake_rect)
+        self.screen.blit(self.brake_image, self.brake_rect)
 
     def draw_pause(self):
         pygame.draw.circle(self.screen, GRAY, self.pause_rect.center, 25)
-        pygame.draw.rect(self.screen, WHITE, (self.pause_rect.left + 6, self.pause_rect.top + 10, 10, 30))
-        pygame.draw.rect(self.screen, WHITE, (self.pause_rect.right - 16, self.pause_rect.top + 10, 10, 30))
+        pygame.draw.rect(self.screen, WHITE, (self.pause_rect.left + 10, self.pause_rect.top + 10, 10, 30))
+        pygame.draw.rect(self.screen, WHITE, (self.pause_rect.right - 20, self.pause_rect.top + 10, 10, 30))
 
     def accelerate(self):
         self.velocity -= self.acceleration
