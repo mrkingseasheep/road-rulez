@@ -9,7 +9,6 @@ from level import Level
 from menu import Menu
 from constants import *
 
-
 class Game:
     def __init__(self):
         pygame.init()
@@ -47,6 +46,10 @@ class Game:
                                 sys.exit()
 
                         elif self.gameStateManager.get_state() == "level":
+                            if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
+                                self.gameStateManager.set_state("pause")
+
+                        elif self.gameStateManager.get_state() == "tutorial":
                             if ((WIDTH // 10 * 9.5 - 25 < event.pos[0] < WIDTH // 10 * 9.5 + 25) and (HEIGHT // 10 - 25 < event.pos[1] < HEIGHT // 10 + 25)):
                                 self.gameStateManager.set_state("pause")
 
